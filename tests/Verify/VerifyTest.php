@@ -20,6 +20,8 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::FREE_EDITION));
 		self::assertFalse($verify->check(Status::SUPPORTER_EDITION));
 		self::assertFalse($verify->check(Status::PLUS_EDITION));
+		self::assertFalse($verify->is_supporter()); // User is not recognised as supporter.
+		self::assertFalse($verify->is_plus()); // User is not recognised as plus.
 
 		$this->assertThrows(fn () => $verify->authorize(Status::SUPPORTER_EDITION), SupporterOnlyOperationException::class, 'supporters');
 		$this->assertThrows(fn () => $verify->authorize(Status::PLUS_EDITION), SupporterOnlyOperationException::class, 'plus');
@@ -37,6 +39,8 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::FREE_EDITION));
 		self::assertTrue($verify->check(Status::SUPPORTER_EDITION));
 		self::assertFalse($verify->check(Status::PLUS_EDITION));
+		self::assertTrue($verify->is_supporter()); // User is recognised as supporter.
+		self::assertFalse($verify->is_plus()); // User is not recognised as plus.
 
 		$this->assertThrows(fn () => $verify->authorize(Status::PLUS_EDITION), SupporterOnlyOperationException::class, 'plus');
 	}
@@ -52,6 +56,8 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::FREE_EDITION));
 		self::assertTrue($verify->check(Status::SUPPORTER_EDITION));
 		self::assertTrue($verify->check(Status::PLUS_EDITION));
+		self::assertTrue($verify->is_supporter()); // user is recognised as supporter.
+		self::assertTrue($verify->is_plus()); // user is recognised as plus.
 	}
 
 	public function testVerifyValidate(): void

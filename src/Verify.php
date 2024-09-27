@@ -75,6 +75,26 @@ class Verify
 	}
 
 	/**
+	 * Returns true if the user is a supporter (or plus registered user).
+	 *
+	 * @return bool
+	 */
+	public function is_supporter(): bool
+	{
+		return $this->check(Status::SUPPORTER_EDITION);
+	}
+
+	/**
+	 * Return true of the user is a plus registered user.
+	 *
+	 * @return bool
+	 */
+	public function is_plus(): bool
+	{
+		return $this->check(Status::PLUS_EDITION);
+	}
+
+	/**
 	 * Authorize the operation if the installation is verified.
 	 * Otherwise throw an exception.
 	 *
