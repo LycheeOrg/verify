@@ -42,7 +42,7 @@ class Verify
 			return $this->validateHash->grant();
 		}
 
-		if ($this->validateSignature->validate($base, $this->license_key)) {
+		if ($this->config_email !== '' && $this->validateSignature->validate($base, $this->license_key)) {
 			return $this->validateSignature->grant();
 		}
 

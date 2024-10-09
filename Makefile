@@ -7,7 +7,7 @@ composer:
 
 test:
 	@if [ -x "vendor/bin/phpunit" ]; then \
-		./vendor/bin/phpunit --stop-on-failure; \
+		./vendor/bin/phpunit; \
 	else \
 		echo ""; \
 		echo "Please install phpunit:"; \

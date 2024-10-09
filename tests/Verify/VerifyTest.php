@@ -48,6 +48,7 @@ class VerifyTest extends TestCase
 	public function testVerifyPlus(): void
 	{
 		$verify = new Verify(
+			config_email: Constants::EMAIL_TEST,
 			license_key: Constants::LICENSE_JSON,
 			public_key: Constants::PUBLIC_EC_KEY,
 		);
