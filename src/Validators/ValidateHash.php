@@ -15,8 +15,7 @@ class ValidateHash implements Validator
 
 	public function __construct(#[\SensitiveParameter] ?string $hash = null)
 	{
-		// ! TODO change me when we are shipping for real.
-		$this->hash = $hash ?? '$2y$10$TBBCJeXOa10Y5WwLU.yeQ.4fQS/BujBknIvISyhlPzp.LU9jWIH2W';
+		$this->hash = $hash ?? '$2y$10$sKikfvI9bJ5/7JE/Ai.QyOz6nxrEP8mrQ55LN9VwxiMOUihGwWY3m';
 	}
 
 	/**

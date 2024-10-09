@@ -14,3 +14,5 @@ node_modules
 sign.sh
 test.sig
 test
+hash-key
+gen_key.sh

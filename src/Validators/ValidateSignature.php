@@ -19,8 +19,7 @@ class ValidateSignature implements Validator
 
 	public function __construct(#[\SensitiveParameter] ?string $public_key = null)
 	{
-		// ! TODO change me when we are shipping for real.
-		$this->public_key = $public_key ?? "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEApC/wjenM2UJTxSalbKIfe/W8nTU\nRdNpNubBOcZED2LVJdnEWi4a4tZx71cmjjjbDNItf2/vsu/nrmb+QDf67w==\n-----END PUBLIC KEY-----";
+		$this->public_key = $public_key ?? "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEcFqncMi8yaAYvqk9nXx1Cl3dQseN\nWAISTnuW67XBopIemOgbbd6PHRPjmuaVrsd/tXT7NX9aikKpAGrgJI5yQw==\n-----END PUBLIC KEY-----";
 	}
 
 	/**
