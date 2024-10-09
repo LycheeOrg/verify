@@ -9,10 +9,9 @@ class Constants
 	public const VERIFIABLE = '"this is a test"';
 	public const HASH = '$2y$10$TBBCJeXOa10Y5WwLU.yeQ.4fQS/BujBknIvISyhlPzp.LU9jWIH2W';
 	public const HASH_KEY = 'BSIM4-MEVVQ-HVQKG-Q6VNT-KP3EZ';
+
 	public const EMAIL_TEST = 'test@example.com';
 
 	public const LICENSE_JSON = 'MEUCIQCSxj5Oe1JoAgrR0lfa4UZksnjPBZjqhuJmRPupu1YJvwIgIRAcwM3r89tLYuO9DOcmOzOHLTX4hPw0FVKwZG8M/2I=';
-
-	// public const LICENSE_JSON = 'MEUCIQD3LMOIbvHu9Uj09nHfyBP+AK91SwW7nHxW6Uq+nx9X/wIgagXs8X2UCp9ISrFhpcTzMYXdakDHomU5PKpcTPQIR5o=';
 }
 
