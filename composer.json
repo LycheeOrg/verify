@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "illuminate/contracts": "^10.0||^11.0",
+        "illuminate/contracts": "^11.0",
         "thecodingmachine/safe": "^2.5"
     },
     "require-dev": {

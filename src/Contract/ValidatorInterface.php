@@ -5,7 +5,7 @@ namespace LycheeVerify\Contract;
 /**
  * Interface to check whther a license key is valid or not.
  */
-interface Validator
+interface ValidatorInterface
 {
 	/**
 	 * Given a license key and a verifiable string, check whether the license key is valid or not.

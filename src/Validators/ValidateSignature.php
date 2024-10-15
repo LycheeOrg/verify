@@ -4,7 +4,7 @@ namespace LycheeVerify\Validators;
 
 use Illuminate\Support\Facades\Log;
 use LycheeVerify\Contract\Status;
-use LycheeVerify\Contract\Validator;
+use LycheeVerify\Contract\ValidatorInterface;
 use function Safe\base64_decode;
 use Safe\Exceptions\OpensslException;
 use function Safe\openssl_pkey_get_public;
@@ -13,7 +13,7 @@ use function Safe\openssl_verify;
 /**
  * This is the validator for the premium users.
  */
-class ValidateSignature implements Validator
+class ValidateSignature implements ValidatorInterface
 {
 	private string $public_key;
 

@@ -4,13 +4,14 @@ namespace LycheeVerify;
 
 use Illuminate\Support\Facades\DB;
 use LycheeVerify\Contract\Status;
+use LycheeVerify\Contract\VerifyInterface;
 use LycheeVerify\Exceptions\SupporterOnlyOperationException;
 use LycheeVerify\Validators\ValidateHash;
 use LycheeVerify\Validators\ValidateSignature;
 use function Safe\json_encode;
 use function Safe\preg_replace;
 
-class Verify
+class Verify implements VerifyInterface
 {
 	private string $config_email;
 	private string $license_key;

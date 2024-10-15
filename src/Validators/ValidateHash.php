@@ -4,12 +4,12 @@ namespace LycheeVerify\Validators;
 
 use Illuminate\Support\Facades\Hash;
 use LycheeVerify\Contract\Status;
-use LycheeVerify\Contract\Validator;
+use LycheeVerify\Contract\ValidatorInterface;
 
 /**
  * This is the validator for supporters.
  */
-class ValidateHash implements Validator
+class ValidateHash implements ValidatorInterface
 {
 	private string $hash;
 
