@@ -34,7 +34,7 @@ The license status is represented by the `Status` enum, which defines three leve
 
 - `FREE_EDITION` - Basic features, no license required
 - `SUPPORTER_EDITION` - Standard supporter features
-- `PLUS_EDITION` - Premium features with extended capabilities
+- `PRO_EDITION` - Premium features with extended capabilities
 
 #### 2. Validation Mechanism
 
@@ -55,7 +55,7 @@ Two concrete validators are provided:
    - Simple validation mechanism for standard supporters
 
 2. **ValidateSignature** - Uses cryptographic signatures for validation
-   - Returns `PLUS_EDITION` status when valid
+   - Returns `PRO_EDITION` status when valid
    - More secure mechanism for premium users
    - Uses asymmetric cryptography (ECDSA) for verification
 
@@ -102,7 +102,7 @@ if ($verify->is_plus()) {
 $verify->authorize();
 
 // Will throw exception if not a plus user
-$verify->authorize(Status::PLUS_EDITION);
+$verify->authorize(Status::PRO_EDITION);
 ```
 
 ### Conditional Execution

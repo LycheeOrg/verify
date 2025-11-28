@@ -9,7 +9,7 @@ use LycheeVerify\Contract\ValidatorInterface;
 /**
  * This is the validator for supporters.
  */
-class ValidateHash implements ValidatorInterface
+class ValidatePro implements ValidatorInterface
 {
 	private string $hash;
 
@@ -33,10 +33,10 @@ class ValidateHash implements ValidatorInterface
 	/**
 	 * If the hash passes, we grant the user the supporter edition.
 	 *
-	 * @return Status::SUPPORTER_EDITION
+	 * @return Status::PRO_EDITION
 	 */
 	public function grant(): Status
 	{
-		return Status::SUPPORTER_EDITION;
+		return Status::PRO_EDITION;
 	}
 }

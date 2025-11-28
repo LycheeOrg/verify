@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\DB;
 use LycheeVerify\Contract\Status;
 use LycheeVerify\Contract\VerifyInterface;
 use LycheeVerify\Exceptions\SupporterOnlyOperationException;
-use LycheeVerify\Validators\ValidateHash;
+use LycheeVerify\Validators\ValidatePro;
 use LycheeVerify\Validators\ValidateSignature;
+use LycheeVerify\Validators\ValidateSupporter;
+
 use function Safe\json_encode;
 use function Safe\preg_replace;
 
@@ -16,18 +18,21 @@ class Verify implements VerifyInterface
 	private string $config_email;
 	private string $license_key;
 	private ValidateSignature $validateSignature;
-	private ValidateHash $validateHash;
+    private ValidateSupporter $validateSupporter;
+	private ValidatePro $validatePro;
 
 	public function __construct(
 		#[\SensitiveParameter] ?string $config_email = null,
 		#[\SensitiveParameter] ?string $license_key = null,
 		#[\SensitiveParameter] ?string $public_key = null,
-		#[\SensitiveParameter] ?string $hash = null,
+		#[\SensitiveParameter] ?string $hash_supporter = null,
+		#[\SensitiveParameter] ?string $hash_pro = null,
 	) {
 		$this->config_email = $config_email ?? DB::table('configs')->where('key', 'email')->first()?->value ?? ''; // @phpstan-ignore-line
 		$this->license_key = $license_key ?? DB::table('configs')->where('key', 'license_key')->first()?->value ?? ''; // @phpstan-ignore-line
 		$this->validateSignature = new ValidateSignature($public_key);
-		$this->validateHash = new ValidateHash($hash);
+		$this->validatePro = new ValidatePro($hash_pro);
+        $this->validateSupporter = new ValidateSupporter($hash_supporter);
 	}
 
 	/**
@@ -39,11 +44,15 @@ class Verify implements VerifyInterface
 	{
 		$base = json_encode(['url' => config('app.url'), 'email' => $this->config_email]);
 
-		if ($this->validateHash->validate($base, $this->license_key)) {
-			return $this->validateHash->grant();
+		if ($this->validateSupporter->validate($base, $this->license_key)) {
+			return $this->validateSupporter->grant();
 		}
 
-		if ($this->config_email !== '' && $this->validateSignature->validate($base, $this->license_key)) {
+		if ($this->validatePro->validate($base, $this->license_key)) {
+			return $this->validatePro->grant();
+		}
+
+        if ($this->config_email !== '' && $this->validateSignature->validate($base, $this->license_key)) {
 			return $this->validateSignature->grant();
 		}
 
@@ -64,15 +73,12 @@ class Verify implements VerifyInterface
 		}
 
 		$status = $this->get_status();
-		if ($status === Status::PLUS_EDITION) {
-			return true;
-		}
-
-		if ($status === Status::SUPPORTER_EDITION && $required_status === Status::SUPPORTER_EDITION) {
-			return true;
-		}
-
-		return false;
+        return match ($status) {
+            Status::SIGNATURE_EDITION => true,
+            Status::PRO_EDITION => in_array($required_status, [Status::PRO_EDITION, Status::SUPPORTER_EDITION], true),
+            Status::SUPPORTER_EDITION => in_array($required_status, [Status::SUPPORTER_EDITION], true),
+            default => false,
+        };
 	}
 
 	/**
@@ -90,10 +96,20 @@ class Verify implements VerifyInterface
 	 *
 	 * @return bool
 	 */
-	public function is_plus(): bool
+	public function is_pro(): bool
 	{
-		return $this->check(Status::PLUS_EDITION);
+		return $this->check(Status::PRO_EDITION);
 	}
+
+    /**
+     * Return true if the user is a signature user
+     *
+     * @return bool
+     */
+    public function is_signature(): bool
+    {
+        return $this->check(Status::SIGNATURE_EDITION);
+    }
 
 	/**
 	 * Authorize the operation if the installation is verified.
@@ -137,6 +153,7 @@ class Verify implements VerifyInterface
 	 */
 	public function validate(): bool
 	{
+        /** @var array<class-string,string>|null $checks */
 		$checks = config('verify.validation');
 		if ($checks === null || count($checks) === 0) {
 			return false;
