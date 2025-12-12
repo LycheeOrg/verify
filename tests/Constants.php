@@ -10,7 +10,7 @@ class Constants
 	public const HASH = '$2y$10$TBBCJeXOa10Y5WwLU.yeQ.4fQS/BujBknIvISyhlPzp.LU9jWIH2W';
 	public const HASH_KEY = 'BSIM4-MEVVQ-HVQKG-Q6VNT-KP3EZ';
 
-    public const HASH2 = '$2y$10$QZe2zo7.0ymBbHTfg7j2YOLjVQV7St5.mHDaMUro0Kx2Ca/c0ZZZ2';
+	public const HASH2 = '$2y$10$QZe2zo7.0ymBbHTfg7j2YOLjVQV7St5.mHDaMUro0Kx2Ca/c0ZZZ2';
 	public const HASH2_KEY = 'OFVZ4-ZRIID-UIDXT-D6IAG-XC3RM';
 
 	public const EMAIL_TEST = 'test@example.com';

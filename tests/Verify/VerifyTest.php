@@ -20,7 +20,7 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::FREE_EDITION));
 		self::assertFalse($verify->check(Status::SUPPORTER_EDITION));
 		self::assertFalse($verify->check(Status::PRO_EDITION));
-        self::assertFalse($verify->check(Status::SIGNATURE_EDITION));
+		self::assertFalse($verify->check(Status::SIGNATURE_EDITION));
 		self::assertFalse($verify->is_supporter()); // User is not recognised as supporter.
 		self::assertFalse($verify->is_pro()); // User is not recognised as pro.
 
@@ -33,7 +33,7 @@ class VerifyTest extends TestCase
 		$verify = new Verify(
 			license_key: Constants::HASH_KEY,
 			hash_supporter: Constants::HASH,
-            hash_pro: Constants::HASH2,
+			hash_pro: Constants::HASH2,
 		);
 		self::assertEquals($verify->get_status(), Status::SUPPORTER_EDITION);
 
@@ -41,20 +41,20 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::FREE_EDITION));
 		self::assertTrue($verify->check(Status::SUPPORTER_EDITION));
 		self::assertFalse($verify->check(Status::PRO_EDITION));
-        self::assertFalse($verify->check(Status::SIGNATURE_EDITION));
+		self::assertFalse($verify->check(Status::SIGNATURE_EDITION));
 		self::assertTrue($verify->is_supporter()); // User is recognised as supporter.
 		self::assertFalse($verify->is_pro()); // User is not recognised as pro.
-        self::assertFalse($verify->is_signature()); // User is not recognised as signature.
+		self::assertFalse($verify->is_signature()); // User is not recognised as signature.
 
 		$this->assertThrows(fn () => $verify->authorize(Status::PRO_EDITION), SupporterOnlyOperationException::class, 'pro');
 	}
 
-    	public function testVerifyPro(): void
+	public function testVerifyPro(): void
 	{
 		$verify = new Verify(
 			license_key: Constants::HASH2_KEY,
 			hash_supporter: Constants::HASH,
-            hash_pro: Constants::HASH2,
+			hash_pro: Constants::HASH2,
 		);
 		self::assertEquals($verify->get_status(), Status::PRO_EDITION);
 
@@ -62,10 +62,10 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::FREE_EDITION));
 		self::assertTrue($verify->check(Status::SUPPORTER_EDITION));
 		self::assertTrue($verify->check(Status::PRO_EDITION));
-        self::assertFalse($verify->check(Status::SIGNATURE_EDITION));
+		self::assertFalse($verify->check(Status::SIGNATURE_EDITION));
 		self::assertTrue($verify->is_supporter()); // User is recognised as supporter.
 		self::assertTrue($verify->is_pro()); // User is recognised as pro.
-        self::assertFalse($verify->is_signature()); // User is not recognised as signature.
+		self::assertFalse($verify->is_signature()); // User is not recognised as signature.
 	}
 
 	public function testVerifySignature(): void
@@ -83,7 +83,7 @@ class VerifyTest extends TestCase
 		self::assertTrue($verify->check(Status::SIGNATURE_EDITION));
 		self::assertTrue($verify->is_supporter()); // user is recognised as supporter.
 		self::assertTrue($verify->is_pro()); // user is recognised as pro.
-        self::assertTrue($verify->is_signature()); // User is not recognised as signature.
+		self::assertTrue($verify->is_signature()); // User is not recognised as signature.
 	}
 
 	public function testVerifyValidate(): void
@@ -91,7 +91,7 @@ class VerifyTest extends TestCase
 		$verify = new Verify();
 
 		// Check config before executing validation
-        /** @var array<class-string,string> $checks */
+		/** @var array<class-string,string> $checks */
 		$checks = config('verify.validation');
 		foreach ($checks as $class => $value) {
 			$file = (new \ReflectionClass($class))->getFileName();

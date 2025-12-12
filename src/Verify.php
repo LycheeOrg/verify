@@ -9,7 +9,6 @@ use LycheeVerify\Exceptions\SupporterOnlyOperationException;
 use LycheeVerify\Validators\ValidatePro;
 use LycheeVerify\Validators\ValidateSignature;
 use LycheeVerify\Validators\ValidateSupporter;
-
 use function Safe\json_encode;
 use function Safe\preg_replace;
 
@@ -18,7 +17,7 @@ class Verify implements VerifyInterface
 	private string $config_email;
 	private string $license_key;
 	private ValidateSignature $validateSignature;
-    private ValidateSupporter $validateSupporter;
+	private ValidateSupporter $validateSupporter;
 	private ValidatePro $validatePro;
 
 	public function __construct(
@@ -32,7 +31,7 @@ class Verify implements VerifyInterface
 		$this->license_key = $license_key ?? DB::table('configs')->where('key', 'license_key')->first()?->value ?? ''; // @phpstan-ignore-line
 		$this->validateSignature = new ValidateSignature($public_key);
 		$this->validatePro = new ValidatePro($hash_pro);
-        $this->validateSupporter = new ValidateSupporter($hash_supporter);
+		$this->validateSupporter = new ValidateSupporter($hash_supporter);
 	}
 
 	/**
@@ -52,7 +51,7 @@ class Verify implements VerifyInterface
 			return $this->validatePro->grant();
 		}
 
-        if ($this->config_email !== '' && $this->validateSignature->validate($base, $this->license_key)) {
+		if ($this->config_email !== '' && $this->validateSignature->validate($base, $this->license_key)) {
 			return $this->validateSignature->grant();
 		}
 
@@ -73,12 +72,13 @@ class Verify implements VerifyInterface
 		}
 
 		$status = $this->get_status();
-        return match ($status) {
-            Status::SIGNATURE_EDITION => true,
-            Status::PRO_EDITION => in_array($required_status, [Status::PRO_EDITION, Status::SUPPORTER_EDITION], true),
-            Status::SUPPORTER_EDITION => in_array($required_status, [Status::SUPPORTER_EDITION], true),
-            default => false,
-        };
+
+		return match ($status) {
+			Status::SIGNATURE_EDITION => true,
+			Status::PRO_EDITION => in_array($required_status, [Status::PRO_EDITION, Status::SUPPORTER_EDITION], true),
+			Status::SUPPORTER_EDITION => in_array($required_status, [Status::SUPPORTER_EDITION], true),
+			default => false,
+		};
 	}
 
 	/**
@@ -101,15 +101,15 @@ class Verify implements VerifyInterface
 		return $this->check(Status::PRO_EDITION);
 	}
 
-    /**
-     * Return true if the user is a signature user
-     *
-     * @return bool
-     */
-    public function is_signature(): bool
-    {
-        return $this->check(Status::SIGNATURE_EDITION);
-    }
+	/**
+	 * Return true if the user is a signature user.
+	 *
+	 * @return bool
+	 */
+	public function is_signature(): bool
+	{
+		return $this->check(Status::SIGNATURE_EDITION);
+	}
 
 	/**
 	 * Authorize the operation if the installation is verified.
@@ -153,7 +153,7 @@ class Verify implements VerifyInterface
 	 */
 	public function validate(): bool
 	{
-        /** @var array<class-string,string>|null $checks */
+		/** @var array<class-string,string>|null $checks */
 		$checks = config('verify.validation');
 		if ($checks === null || count($checks) === 0) {
 			return false;

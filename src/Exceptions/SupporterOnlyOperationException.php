@@ -12,7 +12,7 @@ final class SupporterOnlyOperationException extends BaseVerifyException
 	public function __construct(Status $status = Status::SUPPORTER_EDITION)
 	{
 		$users = match ($status) {
-            Status::SIGNATURE_EDITION => 'signature users',
+			Status::SIGNATURE_EDITION => 'signature users',
 			Status::PRO_EDITION => 'pro users',
 			default => 'supporters',
 		};

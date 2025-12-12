@@ -36,12 +36,12 @@ interface VerifyInterface
 	 */
 	public function is_pro(): bool;
 
-    /**
-     * Return true if the user is a signature user
-     *
-     * @return bool
-     */
-    public function is_signature(): bool;
+	/**
+	 * Return true if the user is a signature user.
+	 *
+	 * @return bool
+	 */
+	public function is_signature(): bool;
 
 	/**
 	 * Authorize the operation if the installation is verified.
