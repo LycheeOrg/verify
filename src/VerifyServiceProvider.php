@@ -3,6 +3,7 @@
 namespace LycheeVerify;
 
 use Illuminate\Support\ServiceProvider;
+use LycheeVerify\Console\Commands\CheckKeyCommand;
 
 class VerifyServiceProvider extends ServiceProvider
 {
@@ -17,7 +18,7 @@ class VerifyServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->mergeConfigFrom(static::CONFIG, 'verify');
+		$this->mergeConfigFrom(self::CONFIG, 'verify');
 
 		$this->app->bind('verify', function () {
 			return new \LycheeVerify\Verify(); // Replace with your actual instantiation logic.
@@ -26,5 +27,10 @@ class VerifyServiceProvider extends ServiceProvider
 
 	public function boot(): void
 	{
+		if ($this->app->runningInConsole()) {
+			$this->commands([
+				CheckKeyCommand::class,
+			]);
+		}
 	}
 }

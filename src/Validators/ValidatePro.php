@@ -15,7 +15,7 @@ class ValidatePro implements ValidatorInterface
 
 	public function __construct(#[\SensitiveParameter] ?string $hash = null)
 	{
-		$this->hash = $hash ?? '$2y$10$Bo9bqC34tQr.hEJ1qZZNBO.dkJRoEiLeZpXxlsYaSlaKi/dRyCyea';
+		$this->hash = $hash ?? '$2y$12$HCan1i4raFBRltqPSy2imeDAIf7UQxSQTJpA3Jv0cJ/fplNc4mEta';
 	}
 
 	/**
