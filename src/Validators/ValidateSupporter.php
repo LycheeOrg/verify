@@ -9,13 +9,13 @@ use LycheeVerify\Contract\ValidatorInterface;
 /**
  * This is the validator for supporters.
  */
-class ValidateHash implements ValidatorInterface
+class ValidateSupporter implements ValidatorInterface
 {
 	private string $hash;
 
 	public function __construct(#[\SensitiveParameter] ?string $hash = null)
 	{
-		$this->hash = $hash ?? '$2y$10$Bo9bqC34tQr.hEJ1qZZNBO.dkJRoEiLeZpXxlsYaSlaKi/dRyCyea';
+		$this->hash = $hash ?? '$2y$12$x58lfmOIxyKh3kzZyWJibuDPnDXO7er6xmDqoUZ3PNrFJHF9DaHpC';
 	}
 
 	/**

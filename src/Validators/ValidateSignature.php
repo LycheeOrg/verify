@@ -51,10 +51,10 @@ class ValidateSignature implements ValidatorInterface
 	/**
 	 * If the signature passes, we grant the user the plus edition.
 	 *
-	 * @return Status::PLUS_EDITION
+	 * @return Status::SIGNATURE_EDITION
 	 */
 	public function grant(): Status
 	{
-		return Status::PLUS_EDITION;
+		return Status::SIGNATURE_EDITION;
 	}
 }

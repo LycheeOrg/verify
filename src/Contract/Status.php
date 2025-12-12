@@ -9,5 +9,6 @@ enum Status: string
 {
 	case FREE_EDITION = 'free';
 	case SUPPORTER_EDITION = 'se';
-	case PLUS_EDITION = 'plus';
+	case PRO_EDITION = 'pro';
+	case SIGNATURE_EDITION = 'signature';
 }

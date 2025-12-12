@@ -1,17 +1,21 @@
 <?php
 
+use LycheeVerify\Http\Middleware\VerifyProStatus;
 use LycheeVerify\Http\Middleware\VerifySupporterStatus;
-use LycheeVerify\Validators\ValidateHash;
+use LycheeVerify\Validators\ValidatePro;
 use LycheeVerify\Validators\ValidateSignature;
+use LycheeVerify\Validators\ValidateSupporter;
 use LycheeVerify\Verify;
 use LycheeVerify\VerifyServiceProvider;
 
 return [
 	'validation' => [
-		ValidateHash::class => 'e2511ed0f1adc865c7c8b40bec19d656323d81f6',
-		ValidateSignature::class => '1bae28471b402e73ddad2ea871b15835954822c3',
-		Verify::class => '6dd9c193b7505dff9d4ba0f19f0e2b3a3171d83a',
+		ValidateSupporter::class => 'ef1a42701af6dc36e052556a0ee1c762394f9428',
+		ValidatePro::class => '482b48f1a026684b6c1754e45ca180ffc52483ff',
+		ValidateSignature::class => '5a8a855d4b59c44c298daa66801c79f2aba20492',
+		Verify::class => 'ffd01909f5189bc7bae21266e356f83c898ccd37',
 		VerifySupporterStatus::class => '6358c45ed0414c1e2697e0881238659fa6221bed',
-		VerifyServiceProvider::class => '927a8f3c811fc82cb8a0ac2667c06e7d292c3633',
+		VerifyProStatus::class => '212e6ada794587ee8e2b81cf76e243d134a7e823',
+		VerifyServiceProvider::class => '923b63b15d25e69b95ed1d5ec1c82ba57f1a7d74',
 	],
 ];
