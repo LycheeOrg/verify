@@ -5,6 +5,7 @@ namespace LycheeVerify;
 use Illuminate\Support\Facades\DB;
 use LycheeVerify\Contract\Status;
 use LycheeVerify\Contract\VerifyInterface;
+use LycheeVerify\Exceptions\SupporterOnlyOperationException;
 use LycheeVerify\Validators\ValidatePro;
 use LycheeVerify\Validators\ValidateSignature;
 use LycheeVerify\Validators\ValidateSupporter;
@@ -86,5 +87,22 @@ class Verify implements VerifyInterface
 		}
 
 		return true;
+	}
+
+	/**
+	 * Authorize the operation if the installation is verified.
+	 * Otherwise throw an exception.
+	 *
+	 * @param Status $required_status (default to SUPPORTER_EDITION)
+	 *
+	 * @return void
+	 *
+	 * @throws SupporterOnlyOperationException
+	 */
+	public function authorize(Status $required_status = Status::SUPPORTER_EDITION): void
+	{
+		if (!$this->check($required_status)) {
+			throw new SupporterOnlyOperationException($required_status);
+		}
 	}
 }
