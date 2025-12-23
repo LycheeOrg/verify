@@ -4,7 +4,7 @@
     "homepage": "https://github.com/LycheeOrg/verify",
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "illuminate/contracts": "^12.0||^11.0",
         "thecodingmachine/safe": "^3.3"
     },
@@ -47,7 +47,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         },
         "sort-packages": true,
         "allow-plugins": {
