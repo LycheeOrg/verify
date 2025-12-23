@@ -3,7 +3,6 @@
 namespace LycheeVerify;
 
 use LycheeVerify\Contract\Status;
-use LycheeVerify\Exceptions\SupporterOnlyOperationException;
 
 trait VerifyTrait
 {
@@ -60,23 +59,6 @@ trait VerifyTrait
 	public function is_signature(): bool
 	{
 		return $this->check(Status::SIGNATURE_EDITION);
-	}
-
-	/**
-	 * Authorize the operation if the installation is verified.
-	 * Otherwise throw an exception.
-	 *
-	 * @param Status $required_status (default to SUPPORTER_EDITION)
-	 *
-	 * @return void
-	 *
-	 * @throws SupporterOnlyOperationException
-	 */
-	public function authorize(Status $required_status = Status::SUPPORTER_EDITION): void
-	{
-		if (!$this->check($required_status)) {
-			throw new SupporterOnlyOperationException($required_status);
-		}
 	}
 
 	/**

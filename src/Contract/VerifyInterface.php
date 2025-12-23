@@ -2,8 +2,6 @@
 
 namespace LycheeVerify\Contract;
 
-use LycheeVerify\Exceptions\SupporterOnlyOperationException;
-
 interface VerifyInterface
 {
 	/**
@@ -42,18 +40,6 @@ interface VerifyInterface
 	 * @return bool
 	 */
 	public function is_signature(): bool;
-
-	/**
-	 * Authorize the operation if the installation is verified.
-	 * Otherwise throw an exception.
-	 *
-	 * @param Status $required_status (default to SUPPORTER_EDITION)
-	 *
-	 * @return void
-	 *
-	 * @throws SupporterOnlyOperationException
-	 */
-	public function authorize(Status $required_status = Status::SUPPORTER_EDITION): void;
 
 	/**
 	 * Fork depending whether the installation is verified or not.

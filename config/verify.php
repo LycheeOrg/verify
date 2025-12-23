@@ -14,10 +14,10 @@ return [
 		ValidateSupporter::class => 'ef1a42701af6dc36e052556a0ee1c762394f9428',
 		ValidatePro::class => '482b48f1a026684b6c1754e45ca180ffc52483ff',
 		ValidateSignature::class => '5a8a855d4b59c44c298daa66801c79f2aba20492',
-		Verify::class => 'aba420193a9d017e36a215ef8dbd6332bd2c2525',
+		Verify::class => 'f15a25c69847bf635c7b0cc730ea24a5aaf008b8',
 		VerifySupporterStatus::class => '6358c45ed0414c1e2697e0881238659fa6221bed',
 		VerifyProStatus::class => '212e6ada794587ee8e2b81cf76e243d134a7e823',
 		VerifyServiceProvider::class => '923b63b15d25e69b95ed1d5ec1c82ba57f1a7d74',
-		VerifyTrait::class => '1a0679c1d63b209b9427de6073e48bb1246e02a4',
+		VerifyTrait::class => '2a2543fb702b95fe0d4cc78319bef6906a41f093',
 	],
 ];
