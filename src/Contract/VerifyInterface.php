@@ -53,11 +53,4 @@ interface VerifyInterface
 	 * @return T
 	 */
 	public function when(mixed $valIfTrue, mixed $valIfFalse, Status $required_status = Status::SUPPORTER_EDITION): mixed;
-
-	/**
-	 * Validate installation.
-	 *
-	 * @return bool
-	 */
-	public function validate(): bool;
 }
