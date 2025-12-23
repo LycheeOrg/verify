@@ -21,6 +21,8 @@ class Verify implements VerifyInterface
 	private ValidateSupporter $validateSupporter;
 	private ValidatePro $validatePro;
 
+	private ?Status $status;
+
 	public function __construct(
 		#[\SensitiveParameter] ?string $config_email = null,
 		#[\SensitiveParameter] ?string $license_key = null,
@@ -42,6 +44,16 @@ class Verify implements VerifyInterface
 	 */
 	public function get_status(): Status
 	{
+		return $this->status ??= $this->resolve_status();
+	}
+
+	/**
+	 * Private resolver for status.
+	 *
+	 * @return Status
+	 */
+	private function resolve_status(): Status
+	{
 		$base = json_encode(['url' => config('app.url'), 'email' => $this->config_email]);
 
 		if ($this->validateSupporter->validate($base, $this->license_key)) {
@@ -57,6 +69,16 @@ class Verify implements VerifyInterface
 		}
 
 		return Status::FREE_EDITION;
+	}
+
+	/**
+	 * Reset the cached status.
+	 *
+	 * @return void
+	 */
+	public function reset_status(): void
+	{
+		$this->status = null;
 	}
 
 	/**
