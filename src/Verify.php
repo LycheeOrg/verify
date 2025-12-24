@@ -127,4 +127,22 @@ class Verify implements VerifyInterface
 			throw new SupporterOnlyOperationException($required_status);
 		}
 	}
+
+	/**
+	 * Fork depending whether the installation is verified or not.
+	 *
+	 * @template T
+	 *
+	 * @param T|\Closure(): T $valIfTrue       what happens or Value if we features are enabled
+	 * @param T|\Closure(): T $valIfFalse      what happens or Value if we features are disabled
+	 * @param Status          $required_status
+	 *
+	 * @return T
+	 */
+	public function when(mixed $valIfTrue, mixed $valIfFalse, Status $required_status = Status::SUPPORTER_EDITION): mixed
+	{
+		$retValue = $this->check($required_status) ? $valIfTrue : $valIfFalse;
+
+		return is_callable($retValue) ? $retValue() : $retValue;
+	}
 }
