@@ -3,6 +3,7 @@
 namespace LycheeVerify;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use LycheeVerify\Contract\Status;
 use LycheeVerify\Contract\VerifyInterface;
 use LycheeVerify\Exceptions\SupporterOnlyOperationException;
@@ -23,6 +24,8 @@ class Verify implements VerifyInterface
 
 	private ?Status $status;
 
+	private bool $initialized = false;
+
 	public function __construct(
 		#[\SensitiveParameter] ?string $config_email = null,
 		#[\SensitiveParameter] ?string $license_key = null,
@@ -30,11 +33,45 @@ class Verify implements VerifyInterface
 		#[\SensitiveParameter] ?string $hash_supporter = null,
 		#[\SensitiveParameter] ?string $hash_pro = null,
 	) {
-		$this->config_email = $config_email ?? DB::table('configs')->where('key', 'email')->first()?->value ?? ''; // @phpstan-ignore-line
-		$this->license_key = $license_key ?? DB::table('configs')->where('key', 'license_key')->first()?->value ?? ''; // @phpstan-ignore-line
 		$this->validateSignature = new ValidateSignature($public_key);
 		$this->validatePro = new ValidatePro($hash_pro);
 		$this->validateSupporter = new ValidateSupporter($hash_supporter);
+		$this->init($config_email, $license_key);
+	}
+
+	/**
+	 * To avoid crashing when the database does not exists we
+	 * add some safeties.
+	 *
+	 * @param string|null $config_email
+	 * @param string|null $license_key
+	 *
+	 * @return bool
+	 */
+	private function init(
+		#[\SensitiveParameter] ?string $config_email = null,
+		#[\SensitiveParameter] ?string $license_key = null,
+	): bool {
+		if ($config_email !== null || $license_key !== null) {
+			// If both values are provided, no need to check the database
+			$this->config_email = $config_email ?? '';
+			$this->license_key = $license_key ?? '';
+			$this->initialized = true;
+
+			return true;
+		}
+
+		// Validate that the database is ready
+		if (!Schema::hasTable('configs')) {
+			return false;
+		}
+
+		// Load the necessary config entries
+		$this->config_email = DB::table('configs')->where('key', 'email')->first()?->value ?? ''; // @phpstan-ignore-line
+		$this->license_key = DB::table('configs')->where('key', 'license_key')->first()?->value ?? ''; // @phpstan-ignore-line
+		$this->initialized = true;
+
+		return true;
 	}
 
 	/**
@@ -44,6 +81,10 @@ class Verify implements VerifyInterface
 	 */
 	public function get_status(): Status
 	{
+		if (!$this->initialized && !$this->init()) {
+			return Status::FREE_EDITION;
+		}
+
 		return $this->status ??= $this->resolve_status();
 	}
 
