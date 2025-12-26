@@ -29,7 +29,7 @@ function generateSecureKey(): string
 
 // Generate and display the key
 $key = generateSecureKey();
-$hash = password_hash($key, PASSWORD_BCRYPT);
+$hash = hash('sha3-256', $key);
 
 echo "Generated key: " . $key . PHP_EOL;
 echo "Bcrypt hash:   " . $hash . PHP_EOL;

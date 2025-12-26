@@ -120,7 +120,7 @@ class Verify implements VerifyInterface
 	public function reset_status(): void
 	{
 		$this->status = null;
-        $this->initialized = false;
+		$this->initialized = false;
 	}
 
 	/**

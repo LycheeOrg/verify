@@ -2,7 +2,6 @@
 
 namespace LycheeVerify\Validators;
 
-use Illuminate\Support\Facades\Hash;
 use LycheeVerify\Contract\Status;
 use LycheeVerify\Contract\ValidatorInterface;
 
@@ -15,7 +14,7 @@ class ValidateSupporter implements ValidatorInterface
 
 	public function __construct(#[\SensitiveParameter] ?string $hash = null)
 	{
-		$this->hash = $hash ?? '$2y$12$x58lfmOIxyKh3kzZyWJibuDPnDXO7er6xmDqoUZ3PNrFJHF9DaHpC';
+		$this->hash = $hash ?? 'a1d156bc04660d6e34c248e9efc8619fefbe163f691559c7ecc02d695463d100';
 	}
 
 	/**
@@ -27,7 +26,8 @@ class ValidateSupporter implements ValidatorInterface
 			return false;
 		}
 
-		return Hash::check($license, $this->hash);
+		// We could use Hash::check here, but it is WAY too costly: 150ms per call.
+		return hash('sha3-256', $license) === $this->hash;
 	}
 
 	/**
