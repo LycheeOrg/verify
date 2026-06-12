@@ -5,13 +5,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "illuminate/contracts": "^12.0||^11.0",
+        "illuminate/contracts": "^13.0||^12.0||^11.0",
         "thecodingmachine/safe": "^3.3"
     },
     "require-dev": {
         "nunomaduro/collision": "^8.8",
         "larastan/larastan": "^3.6",
-        "orchestra/testbench": "^10.0.0||^9.0.0||^8.22.0",
+        "orchestra/testbench": "^11.0.0||^10.0.0||^9.0.0||^8.22.0",
         "friendsofphp/php-cs-fixer": "^3.3",
         "lychee-org/phpstan-lychee": "^v2.0.2",
         "php-parallel-lint/php-parallel-lint": "^1.4",
