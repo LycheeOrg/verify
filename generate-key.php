@@ -32,4 +32,4 @@ $key = generateSecureKey();
 $hash = hash('sha3-256', $key);
 
 echo "Generated key: " . $key . PHP_EOL;
-echo "Bcrypt hash:   " . $hash . PHP_EOL;
+echo "sha3-256 hash: " . $hash . PHP_EOL;
