@@ -11,3 +11,8 @@ parameters:
 		- database/migrations
 		- config
 	ignoreErrors:
+		-
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			path: *config/*.php
+
+
