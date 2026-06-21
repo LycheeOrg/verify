@@ -49,7 +49,7 @@ class Rotation
 			return RotationResult::fail($data['message']);
 		}
 
-		if (!isset($data['value']) || !isset($data['tier']) || $data['tier'] === 'none') {
+		if (!isset($data['value']) || !isset($data['tier'])) {
 			Cache::put(self::CACHE_KEY, true, now()->addDay());
 
 			return RotationResult::fail('No valid license in response.');
