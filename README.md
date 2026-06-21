@@ -31,14 +31,6 @@ composer test
 composer analyse
 ```
 
-## Updating Integrity Hashes
-
-After modifying core source files, update the validation hashes:
-
-```bash
-php update-hashes.php
-```
-
 ## Security Vulnerabilities
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.

@@ -215,9 +215,3 @@ if ($verify->validate()) {
 ```
 
 This system compares file checksums against expected values to ensure the verification system itself hasn't been compromised.
-
-To update the hashes after modifying core files:
-
-```bash
-php update-hashes.php
-```
