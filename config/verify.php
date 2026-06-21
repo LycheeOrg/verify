@@ -11,7 +11,7 @@ use LycheeVerify\VerifyTrait;
 
 return [
 	'keygen_api_key' => env('KEYGEN_API_KEY', ''),
-	'keygen_url' => env('KEYGEN_URL', 'https://keygen.lycheeorg.dev/api/licenses/me'),
+	'keygen_url' => env('KEYGEN_URL', 'https://keygen.lycheeorg.dev/api'),
 
 	'validation' => [
 		ValidateSupporter::class => 'a12d601f9f22a6f326901f0c4deb3cdeb5d6cc47',

@@ -13,7 +13,7 @@ use LycheeVerify\Tests\TestVerifyFactory;
 
 class RotationTest extends TestCase
 {
-	private const KEYGEN_URL = 'https://keygen.lycheeorg.dev/api/licenses/me';
+	private const KEYGEN_URL = 'https://keygen.lycheeorg.dev/api';
 
 	private function makeRotation(?string $hash_supporter = null): Rotation
 	{
@@ -30,8 +30,10 @@ class RotationTest extends TestCase
 		Http::fake();
 
 		$rotation = $this->makeRotation();
-		self::assertNull($rotation->rotate());
+		$result = $rotation->rotate();
 
+		self::assertFalse($result->success);
+		self::assertEquals('No API key configured.', $result->message);
 		Http::assertNothingSent();
 	}
 
@@ -43,8 +45,10 @@ class RotationTest extends TestCase
 		Http::fake();
 
 		$rotation = $this->makeRotation();
-		self::assertNull($rotation->rotate());
+		$result = $rotation->rotate();
 
+		self::assertFalse($result->success);
+		self::assertEquals('Retry timeout active.', $result->message);
 		Http::assertNothingSent();
 	}
 
@@ -52,11 +56,13 @@ class RotationTest extends TestCase
 	{
 		config()->set('verify.keygen_api_key', 'some-key');
 		config()->set('verify.keygen_url', self::KEYGEN_URL);
-		Http::fake([self::KEYGEN_URL => Http::response('', 500)]);
+		Http::fake([self::KEYGEN_URL . '/licenses/me' => Http::response('', 500)]);
 
 		$rotation = $this->makeRotation();
-		self::assertNull($rotation->rotate());
+		$result = $rotation->rotate();
 
+		self::assertFalse($result->success);
+		self::assertEquals('HTTP request failed with status 500.', $result->message);
 		self::assertTrue(Cache::has(Rotation::CACHE_KEY));
 	}
 
@@ -64,11 +70,13 @@ class RotationTest extends TestCase
 	{
 		config()->set('verify.keygen_api_key', 'bad-key');
 		config()->set('verify.keygen_url', self::KEYGEN_URL);
-		Http::fake([self::KEYGEN_URL => Http::response(['message' => 'Unauthenticated.'], 401)]);
+		Http::fake([self::KEYGEN_URL . '/licenses/me' => Http::response(['message' => 'Unauthenticated.'], 401)]);
 
 		$rotation = $this->makeRotation();
-		self::assertNull($rotation->rotate());
+		$result = $rotation->rotate();
 
+		self::assertFalse($result->success);
+		self::assertEquals('Unauthenticated.', $result->message);
 		self::assertTrue(Cache::has(Rotation::CACHE_KEY));
 	}
 
@@ -76,7 +84,7 @@ class RotationTest extends TestCase
 	{
 		config()->set('verify.keygen_api_key', 'some-key');
 		config()->set('verify.keygen_url', self::KEYGEN_URL);
-		Http::fake([self::KEYGEN_URL => Http::response([
+		Http::fake([self::KEYGEN_URL . '/licenses/me' => Http::response([
 			'type' => null,
 			'value' => null,
 			'email' => null,
@@ -85,8 +93,10 @@ class RotationTest extends TestCase
 		])]);
 
 		$rotation = $this->makeRotation();
-		self::assertNull($rotation->rotate());
+		$result = $rotation->rotate();
 
+		self::assertFalse($result->success);
+		self::assertEquals('No valid license in response.', $result->message);
 		self::assertTrue(Cache::has(Rotation::CACHE_KEY));
 		self::assertEmpty(DB::table('configs')->where('key', 'license_key')->first()->value ?? '');
 	}
@@ -95,7 +105,7 @@ class RotationTest extends TestCase
 	{
 		config()->set('verify.keygen_api_key', 'some-key');
 		config()->set('verify.keygen_url', self::KEYGEN_URL);
-		Http::fake([self::KEYGEN_URL => Http::response([
+		Http::fake([self::KEYGEN_URL . '/licenses/me' => Http::response([
 			'type' => null,
 			'value' => 'INVALID-KEY-THAT-WONT-PASS',
 			'email' => null,
@@ -106,8 +116,10 @@ class RotationTest extends TestCase
 		DB::table('configs')->insert(['key' => 'license_key', 'value' => '', 'cat' => 'config', 'type_range' => 'string', 'is_secret' => true, 'description' => '']);
 
 		$rotation = $this->makeRotation(hash_supporter: Constants::HASH);
-		self::assertNull($rotation->rotate());
+		$result = $rotation->rotate();
 
+		self::assertFalse($result->success);
+		self::assertEquals('Fetched key failed local validation.', $result->message);
 		self::assertTrue(Cache::has(Rotation::CACHE_KEY));
 		self::assertEquals('', DB::table('configs')->where('key', 'license_key')->first()->value); // @phpstan-ignore-line
 	}
@@ -116,7 +128,7 @@ class RotationTest extends TestCase
 	{
 		config()->set('verify.keygen_api_key', 'valid-key');
 		config()->set('verify.keygen_url', self::KEYGEN_URL);
-		Http::fake([self::KEYGEN_URL => Http::response([
+		Http::fake([self::KEYGEN_URL . '/licenses/me' => Http::response([
 			'type' => null,
 			'value' => Constants::HASH_KEY,
 			'email' => null,
@@ -129,7 +141,8 @@ class RotationTest extends TestCase
 		$rotation = $this->makeRotation(hash_supporter: Constants::HASH);
 		$result = $rotation->rotate();
 
-		self::assertEquals(Constants::HASH_KEY, $result);
+		self::assertTrue($result->success);
+		self::assertNull($result->message);
 		self::assertEquals(Constants::HASH_KEY, DB::table('configs')->where('key', 'license_key')->first()->value); // @phpstan-ignore-line
 		self::assertFalse(Cache::has(Rotation::CACHE_KEY));
 	}
