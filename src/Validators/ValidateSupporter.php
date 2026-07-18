@@ -20,8 +20,12 @@ class ValidateSupporter implements ValidatorInterface
 	/**
 	 * Validate whether the static license key provided matches with the hash.
 	 */
-	public function validate(string $verifiable, string $license): bool
+	public function validate(string $verifiable, string|\SensitiveParameterValue $license): bool
 	{
+		if ($license instanceof \SensitiveParameterValue) {
+			$license = $license->getValue();
+		}
+
 		if ($license === '') {
 			return false;
 		}

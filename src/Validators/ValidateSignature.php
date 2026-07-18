@@ -25,8 +25,12 @@ class ValidateSignature implements ValidatorInterface
 	/**
 	 * Validate whether the cryptographic signature (license) is valid with the hard coded public key.
 	 */
-	public function validate(string $verifiable, string $license): bool
+	public function validate(string $verifiable, string|\SensitiveParameterValue $license): bool
 	{
+		if ($license instanceof \SensitiveParameterValue) {
+			$license = $license->getValue();
+		}
+
 		if ($license === '' || $verifiable === '') {
 			return false;
 		}

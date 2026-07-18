@@ -16,8 +16,10 @@ use function Safe\preg_replace;
 class Verify implements VerifyInterface
 {
 	use VerifyTrait;
-	private string $config_email;
-	private string $license_key;
+	/** @var \SensitiveParameterValue<string> */
+	private \SensitiveParameterValue $config_email;
+	/** @var \SensitiveParameterValue<string> */
+	private \SensitiveParameterValue $license_key;
 	private ValidateSignature $validateSignature;
 	private ValidateSupporter $validateSupporter;
 	private ValidatePro $validatePro;
@@ -54,8 +56,8 @@ class Verify implements VerifyInterface
 	): bool {
 		if ($config_email !== null || $license_key !== null) {
 			// If both values are provided, no need to check the database
-			$this->config_email = $config_email ?? '';
-			$this->license_key = $license_key ?? '';
+			$this->config_email = new \SensitiveParameterValue($config_email ?? '');
+			$this->license_key = new \SensitiveParameterValue($license_key ?? '');
 			$this->initialized = true;
 
 			return true;
@@ -67,8 +69,8 @@ class Verify implements VerifyInterface
 		}
 
 		// Load the necessary config entries
-		$this->config_email = DB::table('configs')->where('key', 'email')->first()?->value ?? ''; // @phpstan-ignore-line
-		$this->license_key = DB::table('configs')->where('key', 'license_key')->first()?->value ?? ''; // @phpstan-ignore-line
+		$this->config_email = new \SensitiveParameterValue(DB::table('configs')->where('key', 'email')->first()?->value ?? ''); // @phpstan-ignore-line
+		$this->license_key = new \SensitiveParameterValue(DB::table('configs')->where('key', 'license_key')->first()?->value ?? ''); // @phpstan-ignore-line
 		$this->initialized = true;
 
 		return true;
@@ -95,7 +97,7 @@ class Verify implements VerifyInterface
 	 */
 	private function resolve_status(): Status
 	{
-		$base = json_encode(['url' => config('app.url'), 'email' => $this->config_email]);
+		$base = json_encode(['url' => config('app.url'), 'email' => $this->config_email->getValue()]);
 
 		if ($this->validateSupporter->validate($base, $this->license_key)) {
 			return $this->validateSupporter->grant();
@@ -105,7 +107,7 @@ class Verify implements VerifyInterface
 			return $this->validatePro->grant();
 		}
 
-		if ($this->config_email !== '' && $this->validateSignature->validate($base, $this->license_key)) {
+		if ($this->config_email->getValue() !== '' && $this->validateSignature->validate($base, $this->license_key)) {
 			return $this->validateSignature->grant();
 		}
 

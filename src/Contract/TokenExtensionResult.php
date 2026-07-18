@@ -14,7 +14,8 @@ class TokenExtensionResult
 		/** @var string[]|null */
 		public readonly ?array $scopes,
 		public readonly ?Carbon $expires_at,
-	) {}
+	) {
+	}
 
 	/**
 	 * @param string[] $scopes

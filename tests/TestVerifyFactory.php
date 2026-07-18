@@ -8,12 +8,17 @@ use LycheeVerify\Verify;
 
 class TestVerifyFactory implements VerifyFactory
 {
+	/** @var \SensitiveParameterValue<?string> */
+	private \SensitiveParameterValue $hash_supporter;
+
 	public function __construct(
-		#[\SensitiveParameter] private ?string $hash_supporter = null,
-	) {}
+		#[\SensitiveParameter] ?string $hash_supporter = null,
+	) {
+		$this->hash_supporter = new \SensitiveParameterValue($hash_supporter);
+	}
 
 	public function make(#[\SensitiveParameter] string $license_key): VerifyInterface
 	{
-		return new Verify(license_key: $license_key, hash_supporter: $this->hash_supporter);
+		return new Verify(license_key: $license_key, hash_supporter: $this->hash_supporter->getValue());
 	}
 }
