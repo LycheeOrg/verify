@@ -10,12 +10,12 @@ interface ValidatorInterface
 	/**
 	 * Given a license key and a verifiable string, check whether the license key is valid or not.
 	 *
-	 * @param string $verifiable
-	 * @param string $license
+	 * @param string                                  $verifiable
+	 * @param string|\SensitiveParameterValue<string> $license
 	 *
 	 * @return bool
 	 */
-	public function validate(string $verifiable, string $license): bool;
+	public function validate(string $verifiable, string|\SensitiveParameterValue $license): bool;
 
 	/**
 	 * Defines the status granted by the Validator in case of success.

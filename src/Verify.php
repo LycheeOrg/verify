@@ -99,15 +99,15 @@ class Verify implements VerifyInterface
 	{
 		$base = json_encode(['url' => config('app.url'), 'email' => $this->config_email->getValue()]);
 
-		if ($this->validateSupporter->validate($base, $this->license_key->getValue())) {
+		if ($this->validateSupporter->validate($base, $this->license_key)) {
 			return $this->validateSupporter->grant();
 		}
 
-		if ($this->validatePro->validate($base, $this->license_key->getValue())) {
+		if ($this->validatePro->validate($base, $this->license_key)) {
 			return $this->validatePro->grant();
 		}
 
-		if ($this->config_email->getValue() !== '' && $this->validateSignature->validate($base, $this->license_key->getValue())) {
+		if ($this->config_email->getValue() !== '' && $this->validateSignature->validate($base, $this->license_key)) {
 			return $this->validateSignature->grant();
 		}
 
