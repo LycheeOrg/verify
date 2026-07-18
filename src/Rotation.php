@@ -16,7 +16,8 @@ class Rotation
 
 	public function __construct(
 		private VerifyFactory $verifyFactory,
-	) {}
+	) {
+	}
 
 	public function rotate(): RotationResult
 	{

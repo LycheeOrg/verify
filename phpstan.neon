@@ -1,6 +1,7 @@
 includes:
 	- vendor/larastan/larastan/extension.neon
 	- vendor/lychee-org/phpstan-lychee/phpstan.neon
+	- vendor/lychee-org/phpstan-sensitive-parameter-values/extension.neon
 
 parameters:
 	level: 9

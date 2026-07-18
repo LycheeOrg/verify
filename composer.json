@@ -9,11 +9,12 @@
         "thecodingmachine/safe": "^3.3"
     },
     "require-dev": {
-        "nunomaduro/collision": "^8.8",
-        "larastan/larastan": "^3.6",
-        "orchestra/testbench": "^11.0.0||^10.0.0||^9.0.0||^8.22.0",
         "friendsofphp/php-cs-fixer": "^3.3",
+        "larastan/larastan": "^3.6",
         "lychee-org/phpstan-lychee": "^v2.0.2",
+        "lychee-org/phpstan-sensitive-parameter-values": "^1.0",
+        "nunomaduro/collision": "^8.8",
+        "orchestra/testbench": "^11.0.0||^10.0.0||^9.0.0||^8.22.0",
         "php-parallel-lint/php-parallel-lint": "^1.4",
         "phpunit/phpunit": "^10.0||^11.0"
     },

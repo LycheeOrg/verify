@@ -15,7 +15,7 @@ class RotationTest extends TestCase
 {
 	private const KEYGEN_URL = 'https://keygen.lycheeorg.dev/api';
 
-	private function makeRotation(?string $hash_supporter = null): Rotation
+	private function makeRotation(#[\SensitiveParameter] ?string $hash_supporter = null): Rotation
 	{
 		$factory = $hash_supporter !== null
 			? new TestVerifyFactory($hash_supporter)
