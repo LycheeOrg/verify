@@ -2,13 +2,14 @@
 
 namespace LycheeVerify\Tests\Verify;
 
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Testing\PendingCommand;
 use LycheeVerify\Console\Commands\CheckKeyCommand;
 use LycheeVerify\Tests\TestCase;
 use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\rewind;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -33,11 +34,16 @@ class CheckKeyCommandTest extends TestCase
 			->assertExitCode(1);
 	}
 
-	public function testKeyIsNotAcceptedAsArgument(): void
+	public function testKeyPassedAsArgumentIsRejectedWithoutEchoingIt(): void
 	{
-		$this->expectException(InvalidArgumentException::class);
+		// Go through ArgvInput and the console kernel, as a real CLI invocation would.
+		$input = new ArgvInput(['artisan', 'verify:check-key', self::INVALID_KEY]);
+		$output = new BufferedOutput();
 
-		$this->checkKey(['key' => self::INVALID_KEY])->run();
+		self::assertSame(1, app(Kernel::class)->handle($input, $output));
+		$display = $output->fetch();
+		self::assertStringContainsString('Passing the license key as an argument is not supported', $display);
+		self::assertStringNotContainsString(self::INVALID_KEY, $display);
 	}
 
 	public function testKeyIsReadFromStdinWhenNotInteractive(): void
